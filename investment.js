@@ -1,4 +1,7 @@
 
+//Balace: Is the total amount of the alt-coin that you own (for example 10000 QTUM)
+//Initial_Buying: Is the amount you bought with your Currency (for example you payed 1.5 ETH)
+//currency: Is the currency you paid to buy your alt coin
 const investment = 
 {
   'QTUM':{
