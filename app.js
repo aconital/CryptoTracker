@@ -46,6 +46,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+const remaining_ETH = 5.24504826+1.73064000;
+
 const my_investment = {
   'QTUM':{
     balance:14.44632619,
@@ -63,8 +65,8 @@ const my_investment = {
     currency: 'ETH',
   },
   'XVG':{
-    balance:0,
-    initial_buying:0,
+    balance:9990.51200000,
+    initial_buying:2.50000000,
     currency: 'ETH',
   },
   'TRX':{
@@ -72,9 +74,19 @@ const my_investment = {
     initial_buying: 1.53846000,
     currency: 'ETH',
   },
-  'XVG':{
-    balance: 9990,
-    initial_buying: 2.5,
+  'XRP':{
+    balance: 0,
+    initial_buying: 0,
+    currency: 'ETH',
+  },
+  'VEN':{
+    balance: 129.87000000,
+    initial_buying: 0.35100000,
+    currency: 'ETH',
+  },
+  'XLM':{
+    balance: 549.45000000,
+    initial_buying: 0.31350000,
     currency: 'ETH',
   },
 
@@ -136,6 +148,35 @@ function generate_coin_data(data,my_investment)
       'Total ETH': chalk.yellow(total.all)
     };
   table.push(total_amount);
+
+
+  table.push({'Coin' :'',
+      'Initial Buy':' ',
+      'Profit':'  ',
+      '%':' ',
+      'Total ETH': '+'
+    });
+
+  table.push({'Coin' :'',
+      'Initial Buy':' ',
+      'Profit':'  ',
+      '%':'Remaining ETH',
+      'Total ETH': remaining_ETH
+    });
+
+  table.push({'Coin' :'',
+      'Initial Buy':'-------------------',
+      'Profit':'-------------------',
+      '%':'-------------------',
+      'Total ETH': '-------------------'
+    });
+
+  table.push({'Coin' :'',
+      'Initial Buy':' ',
+      'Profit':'  ',
+      '%':' ',
+      'Total ETH': remaining_ETH+total.all
+    });
 
   return table;
   
