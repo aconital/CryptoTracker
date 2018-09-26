@@ -46,7 +46,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-const remaining_ETH = 5.24504826+1.73064000;
+const remaining_ETH = 4.57655486;
 
 const my_investment = require('./investment');
 
@@ -65,10 +65,17 @@ function generate_coin_data(data,my_investment)
    if(!my_investment[key].initial_buying) continue;
 
     const symbol = key+my_investment[key].currency;
+    const fiatSymbol = key+'USDT';
+
+    
     //filter it from all data
     const coin = R.propEq('symbol', symbol);
     const coin_data = R.filter(coin, data); 
     const coin_price =coin_data[0].price;
+
+    const coin_fiat = R.propEq('symbol',fiatSymbol);
+    const coin_fiat_data = R.filter(coin_fiat, data); 
+    const coin_fiat_price =coin_fiat_data[0].price;
 
     const cashout_price = coin_price * my_investment[key].balance * 0.99;
     const profit = cashout_price -  my_investment[key].initial_buying;
@@ -81,6 +88,7 @@ function generate_coin_data(data,my_investment)
                            : chalk.green("↑"+my_investment[key].currency+" "+Math.round(Math.abs(profit) * 1000000) / 1000000),
       '%': precentage_change < 0 ? chalk.red("↓% "+Math.round(Math.abs(precentage_change) * 100) / 100)
                            : chalk.green("↑% "+Math.round(Math.abs(precentage_change) * 100) / 100),
+      '$': coin_fiat_price,
       'Total ETH': cashout_price
     };
     total.all += cashout_price;
@@ -95,6 +103,7 @@ function generate_coin_data(data,my_investment)
       'Initial Buy':'-------------------',
       'Profit':'-------------------',
       '%':'-------------------',
+      '$':'-------------------',
       'Total ETH': '-------------------'
     });
 
@@ -103,6 +112,7 @@ function generate_coin_data(data,my_investment)
       'Initial Buy':chalk.yellow(total.initial_buy),
       'Profit':chalk.yellow(total.profit),
       '%': '',
+      '$': '',
       'Total ETH': chalk.yellow(total.all)
     };
   table.push(total_amount);
@@ -112,6 +122,7 @@ function generate_coin_data(data,my_investment)
       'Initial Buy':' ',
       'Profit':'  ',
       '%':' ',
+      '$':' ',
       'Total ETH': '+'
     });
 
@@ -119,6 +130,7 @@ function generate_coin_data(data,my_investment)
       'Initial Buy':' ',
       'Profit':'  ',
       '%':'Remaining ETH',
+      '$':' ',
       'Total ETH': remaining_ETH
     });
 
@@ -126,13 +138,15 @@ function generate_coin_data(data,my_investment)
       'Initial Buy':'-------------------',
       'Profit':'-------------------',
       '%':'-------------------',
+      '$':'-------------------',
       'Total ETH': '-------------------'
     });
 
   table.push({'Coin' :'',
       'Initial Buy':' ',
       'Profit':'  ',
-      '%':' ',
+      '%':'Total ETH',
+      '$':' ',
       'Total ETH': remaining_ETH+total.all
     });
 
